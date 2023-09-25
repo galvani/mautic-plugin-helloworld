@@ -12,6 +12,7 @@ use Mautic\IntegrationsBundle\Auth\Provider\Oauth2TwoLegged\Credentials\StateInt
 class OAuth2ThreeLeggedCredentials
     implements AccessTokenInterface, CodeInterface, StateInterface, CredentialsInterface, RefreshTokenInterface, RedirectUriInterface
 {
+    // TODO consider expires_at but it's not used in the plugin as the TokenPersistance is handling it anyway
     public function __construct(
         private ?string $clientId = null,
         private ?string $clientSecret = null,
@@ -22,17 +23,13 @@ class OAuth2ThreeLeggedCredentials
         private ?string $code = null,
         private ?string $state = null,
         private ?string $redirectUri = null,
-    )
-    {
-    }
+    ) {}
 
     public function getRedirectUri() : string {
         return $this->redirectUri;
     }
 
-
-
-    public function getAuthorizationUrl(): string
+    public function getAuthorizationUrl(): string   // Check how to serve it considering the baseUri
     {
         return $this->baseUri ?? '' . '/oauth2/authorize';
     }
@@ -72,10 +69,10 @@ class OAuth2ThreeLeggedCredentials
         return $this->accessToken;
     }
 
+    // This method is never used, oauth middleware takes care of it
     public function getAccessTokenExpiry(): ?\DateTimeImmutable
     {
-        return new \DateTimeImmutable('+1 hour');
-        // TODO: Implement getAccessTokenExpiry() method.
+        return null;
     }
 
     public function getCode(): ?string
@@ -106,24 +103,6 @@ class OAuth2ThreeLeggedCredentials
     public function getBaseUri(): ?string
     {
         return $this->baseUri;
-    }
-
-    public function setClientId(?string $clientId): OAuth2ThreeLeggedCredentials
-    {
-        $this->clientId = $clientId;
-        return $this;
-    }
-
-    public function setClientSecret(?string $clientSecret): OAuth2ThreeLeggedCredentials
-    {
-        $this->clientSecret = $clientSecret;
-        return $this;
-    }
-
-    public function setTokenUrl(?string $tokenUrl): OAuth2ThreeLeggedCredentials
-    {
-        $this->tokenUrl = $tokenUrl;
-        return $this;
     }
 
     public function setBaseUri(?string $baseUri): OAuth2ThreeLeggedCredentials

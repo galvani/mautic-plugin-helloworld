@@ -39,7 +39,4 @@ return [
             ],
         ]
     ],
-//    'parameters' => [
-//        'epath_api_url_base' => 'https://challenges.cloudflare.com/epath/v0/',
-//    ],
 ];

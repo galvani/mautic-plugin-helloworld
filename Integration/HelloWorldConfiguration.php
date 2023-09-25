@@ -11,8 +11,6 @@ use Mautic\IntegrationsBundle\Auth\Provider\Oauth2ThreeLegged\HttpFactory;
 use Mautic\IntegrationsBundle\Auth\Support\Oauth2\ConfigAccess\ConfigTokenPersistenceInterface;
 use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
 use Mautic\PluginBundle\Entity\Integration;
-use MauticPlugin\HelloWorldBundle\Integration\Auth\AuthorizationCredentials;
-use MauticPlugin\HelloWorldBundle\Integration\Auth\DefaultRedirectUriTrait;
 use MauticPlugin\HelloWorldBundle\Integration\Auth\OAuth2ThreeLeggedCredentials;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -54,74 +52,9 @@ class HelloWorldConfiguration implements ConfigTokenPersistenceInterface
             && ($entity->getApiKeys()['expires_at'] ?? null) !== null;
     }
 
-//    /** @todo this method does not make sense, published and configured are two different things */
-//    public function isPublished(): bool
-//    {
-//        try {
-//            $integration = $this->getIntegrationEntity();
-//
-//            return $integration->getIsPublished() && $this->isConfigured();
-//        } catch (IntegrationNotFoundException $e) {
-//            return false;
-//        }
-//    }
-//
-//    public function isConfigured(): bool
-//    {
-//        $apiKeys = $this->getApiKeys();
-//
-//        return !empty($apiKeys['site_key']) && !empty($apiKeys['secret_key']);
-//    }
-//
-//    public function isAuthorized(): bool
-//    {
-//        return true;
-//    }
-//
-//    /**
-//     * @return mixed[]
-//     */
-//    public function getFeatureSettings(): array
-//    {
-//        try {
-//            $integration = $this->getIntegrationEntity();
-//
-//            return $integration->getFeatureSettings() ?: [];
-//        } catch (IntegrationNotFoundException $e) {
-//            return [];
-//        }
-//    }
-//
-//    /**
-//     * @return string[]
-//     */
-//    public function getApiKeys(): array
-//    {
-//        try {
-//            $integration = $this->getIntegrationEntity();
-//
-//            return $integration->getApiKeys() ?: [];
-//        } catch (IntegrationNotFoundException $e) {
-//            return [];
-//        }
-//    }
-
     public function getIntegrationEntity(): Integration
     {
         return $this->helper->getIntegration(HelloWorldIntegration::NAME)->getIntegrationConfiguration();
-    }
-
-    public function getAuthorizationCredentials(): CredentialsInterface
-    {
-        $apiKeys = $this->getIntegrationEntity()->getApiKeys();
-
-        return new AuthorizationCredentials(
-            $apiKeys['client_id'],
-            $apiKeys['client_secret'],
-            $this->getCallbackUrl(),
-            $this->getAuthorizationUrl(),
-            $this->getTokenUrl(),
-        );
     }
 
     public function getCredentials(): OAuth2ThreeLeggedCredentials
