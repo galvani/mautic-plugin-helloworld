@@ -1,0 +1,32 @@
+{
+    "name": "galvani/mautic-sample-plugin",
+    "description": "Sample Plugin",
+    "type": "mautic-plugin",
+    "keywords": [
+        "mautic",
+        "plugin",
+        "integration"
+    ],
+    "extra": {
+        "install-directory-name": "EpathPlugin"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.0 <=9.0",
+        "mautic/core-lib": "^5.0"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/mautic/FOSOAuthServerBundle.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/mautic/SpBundle.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/mautic/SymfonyBridgeBundle.git"
+        }
+    ]
+}
